@@ -1,0 +1,4 @@
+define([
+    "./unit/module"
+], function () {
+});

@@ -1,0 +1,4 @@
+define([
+    "./rdf/module"
+], function () {
+});
