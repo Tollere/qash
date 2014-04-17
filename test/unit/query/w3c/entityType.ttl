@@ -1,0 +1,61 @@
+@prefix : <http://example.com/ClientMgmt/Type/Entity/> .
+@prefix ac: <http://vocab.argodata.com/2013/common.owl#> .
+@prefix acm: <http://vocab.argodata.com/2013/client.owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aps: <http://vocab.argodata.com/2013/presentation.owl#> .
+@base <http://example.com/ClientMgmt/Type/Entity> .
+
+<> ac:hasOptions ( :0  :1  :2  :3
+                   :4  :5  :6  :7
+                   :8  :9  :10 :11
+                   :12 :13 :14 :15
+   ) .
+
+:0 a acm:EntityType ;
+   aps:displayName ""^^xsd:string .
+
+:1 a acm:EntityType ;
+   aps:displayName "Cooperative"^^xsd:string .
+
+:10 a acm:EntityType ;
+    aps:displayName "Not for Profit Organization"^^xsd:string .
+
+:11 a acm:EntityType ;
+    aps:displayName "Partnership - General"^^xsd:string .
+
+:12 a acm:EntityType ;
+    aps:displayName "Partnership - Limited"^^xsd:string .
+
+:13 a acm:EntityType ;
+    aps:displayName "Professional Association"^^xsd:string .
+
+:14 a acm:EntityType ;
+    aps:displayName "Revocable Trust"^^xsd:string .
+   
+:15 a acm:EntityType ;
+    aps:displayName "Sole Proprietor"^^xsd:string .
+
+:2 a acm:EntityType ;
+   aps:displayName "Corporation - Private"^^xsd:string .
+
+:3 a acm:EntityType ;
+   aps:displayName "Corporation - Public"^^xsd:string .
+
+:4 a acm:EntityType ;
+   aps:displayName "Estate"^^xsd:string .
+
+:5 a acm:EntityType ;
+   aps:displayName "Government Agency"^^xsd:string .
+
+:6 a acm:EntityType ;
+   aps:displayName "Irrevocable Trust"^^xsd:string .
+
+:7 a acm:EntityType ;
+   aps:displayName "Single Member LLC"^^xsd:string .
+
+:8 a acm:EntityType ;
+   aps:displayName "Limited Liability Corporation"^^xsd:string .
+
+:9 a acm:EntityType ;
+   aps:displayName "Limited Liability Partnership"^^xsd:string .

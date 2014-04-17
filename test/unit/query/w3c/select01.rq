@@ -1,0 +1,6 @@
+PREFIX : <http://example.org/> 
+
+SELECT (?s AS ?a) ?p ?o
+{
+  ?s ?p ?o .
+}

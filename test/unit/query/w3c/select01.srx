@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="a"/>
+    <variable name="p"/>
+    <variable name="o"/>
+  </head>
+  <results>
+    <result>
+      <binding name="a">
+        <uri>http://example.com/01</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/homepage</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://manu.sporny.org/</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="a">
+        <uri>http://example.com/01</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/name</uri>
+      </binding>
+      <binding name="o">
+        <literal>Manu Sporny</literal>
+      </binding>
+    </result>
+</sparql>

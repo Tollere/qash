@@ -1,0 +1,7 @@
+PREFIX ac: <http://vocab.argodata.com/2013/common.owl#>
+SELECT ?id
+WHERE 
+{
+  ?s ac:hasOptions ?o .
+  ?o rdf:rest*/rdf:first ?id
+}

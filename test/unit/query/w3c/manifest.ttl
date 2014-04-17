@@ -1,0 +1,85 @@
+@prefix :    <urn:qash/test/unit#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix mf:     <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#> .
+@prefix qt:     <http://www.w3.org/2001/sw/DataAccess/tests/test-query#> .
+
+<> a mf:Manifest ;
+	rdfs:label "Argo SPARQL tests" ;
+	mf:include (
+		<sparql11-test-suite/manifest-all.ttl>
+	) ;
+	
+  rdfs:label "Custom" ;
+  mf:entries ( 
+  :Select01
+  :Select02
+  :Insert01
+  :RegEx01
+  :RegEx02
+  :RegEx03
+  ) . 
+
+:Select01 rdf:type mf:QueryEvaluationTest ;
+    mf:name    "Select 01" ;
+    rdfs:comment "Select with Variable Alias" ;
+    mf:action [ 
+      qt:query  <select01.rq> ;
+      qt:data   <data01.ttl> 
+    ] ;
+    mf:result  <select01.srx> .
+
+:Select02 rdf:type mf:QueryEvaluationTest ;
+    mf:name    "Select 02" ;
+    rdfs:comment "rdf:rest*/rdf:first" ;
+    mf:action [ 
+      qt:query  <select02.rq> ;
+      qt:data   <entityType.ttl> 
+    ] ;
+    mf:result  <select02.srx> .
+
+:Insert01 rdf:type mf:UpdateEvaluationTest ;
+    mf:name    "Insert Data 01" ;
+    rdfs:comment "Insert Data into a named graph" ;
+    mf:action [
+      ut:request <insert-01.ru> ; 
+      ut:graphData [ 
+        ut:graph <empty.ttl> ;
+        rdfs:label "http://example.org/g1" 
+      ]
+    ] ;
+    mf:result [
+      ut:graphData [ 
+        ut:graph <insert-01-post.ttl> ;
+        rdfs:label "http://example.org/g1" 
+      ] 
+    ] .
+
+:RegEx01 rdf:type mf:QueryEvaluationTest ;
+    mf:name "RegEx 01" ;
+    rdfs:comment "simple Regular Expression Query" ;
+    mf:action [ 
+      qt:query  <regEx-01.rq> ;
+      qt:data   <data02.ttl> 
+    ] ;
+    mf:result  <regEx-01.srx> .
+
+:RegEx02 rdf:type mf:QueryEvaluationTest ;
+    mf:name "RegEx 02 - With flag" ;
+    rdfs:comment "Complex RegEx with a flag" ;
+    mf:action [ 
+      qt:query  <regEx-02.rq> ;
+      qt:data   <data02.ttl> 
+    ] ;
+    mf:result  <regEx-02.srx> .
+       
+
+:RegEx03 rdf:type mf:QueryEvaluationTest ;
+    mf:name "RegEx 03 - With flag" ;
+    rdfs:comment "A Second complex RegEx with a flag" ;
+    mf:action [ 
+      qt:query  <regEx-03.rq> ;
+      qt:data   <data02.ttl> 
+    ] ;
+    mf:result  <regEx-03.srx> .
+       
