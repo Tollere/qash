@@ -5,16 +5,59 @@ define([
     "dojo/_base/declare"
 ], function(declare){
     return declare([], {
-        parse: function(input, options){
+        parse: function(text){
+            try {
+                var input = new rdfEnv({
+                    value: text,
+                    pos: 0,
+                    done: new Deferred(),
+                    //base: this._base || base.substr(0, base.lastIndexOf("/") + 1),
+                    callback: function(input, err){
+                        if (err){
+                            this.done.reject(err);
+                        } else {
+                            this.done.resolve(input);
+                        }
+                    }
+                });
+                return this.queryUnit(input) || this.updateUnit(input);
+            } catch(err){
+                var wP = "";
+                var error = lang.mixin({
+                    failed: true,
+                    whileParsing: wP ? wP : "turtle document"
+                }, err);
+                error.msg = error.message;
+                error.message = 'Parsing Error ' + error.msg + " while parsing " + error.whileParsing;
+                error.input = text;
 
+                throw error;
+            }
+        },
+        queryUnit: function(input){
+            //[1] QueryUnit ::= Query
+            return this.query(input);
+        },
+        query: function(input){
+            //[2] Query ::= Prologue ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) ValuesClause
+            this.prologue(input);
+            input.query = this.selectQuery(input) || this.constructQuery(input) || this.describeQuery(input) || this.askQuery(input);
+            if (input.query){
+                input.values = this.valuesClause(input);
+                return input;
+            }
+            return null;
+        },
+        updaetUnit: function(input){
+            //[3] UpdateUnit ::= Update
+            return this.update(input);
+        },
+        prologue: function(input){
+            //[4] Prologue ::= ( BaseDecl | PrefixDecl )*
+            
+            //TODO: figure out how to break things up to avoid duplicate code
         }
         /*
-        [1]  	QueryUnit	  ::=  	Query
-         [2]  	Query	  ::=  	Prologue
-         ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery )
-         ValuesClause
-         [3]  	UpdateUnit	  ::=  	Update
-         [4]  	Prologue	  ::=  	( BaseDecl | PrefixDecl )*
          [5]  	BaseDecl	  ::=  	'BASE' IRIREF
          [6]  	PrefixDecl	  ::=  	'PREFIX' PNAME_NS IRIREF
          [7]  	SelectQuery	  ::=  	SelectClause DatasetClause* WhereClause SolutionModifier
@@ -34,8 +77,7 @@ define([
          [21]  	HavingClause	  ::=  	'HAVING' HavingCondition+
          [22]  	HavingCondition	  ::=  	Constraint
          [23]  	OrderClause	  ::=  	'ORDER' 'BY' OrderCondition+
-         [24]  	OrderCondition	  ::=  	 ( ( 'ASC' | 'DESC' ) BrackettedExpression )
-         | ( Constraint | Var )
+         [24]  	OrderCondition	  ::=  	 ( ( 'ASC' | 'DESC' ) BrackettedExpression ) | ( Constraint | Var )
          [25]  	LimitOffsetClauses	  ::=  	LimitClause OffsetClause? | OffsetClause LimitClause?
          [26]  	LimitClause	  ::=  	'LIMIT' INTEGER
          [27]  	OffsetClause	  ::=  	'OFFSET' INTEGER
@@ -129,13 +171,10 @@ define([
          [115]  	NumericExpression	  ::=  	AdditiveExpression
          [116]  	AdditiveExpression	  ::=  	MultiplicativeExpression ( '+' MultiplicativeExpression | '-' MultiplicativeExpression | ( NumericLiteralPositive | NumericLiteralNegative ) ( ( '*' UnaryExpression ) | ( '/' UnaryExpression ) )* )*
          [117]  	MultiplicativeExpression	  ::=  	UnaryExpression ( '*' UnaryExpression | '/' UnaryExpression )*
-         [118]  	UnaryExpression	  ::=  	  '!' PrimaryExpression
-         |	'+' PrimaryExpression
-         |	'-' PrimaryExpression
-         |	PrimaryExpression
+         [118]  	UnaryExpression	  ::=  	  ('!' | '+' | '-')? PrimaryExpression
          [119]  	PrimaryExpression	  ::=  	BrackettedExpression | BuiltInCall | iriOrFunction | RDFLiteral | NumericLiteral | BooleanLiteral | Var
          [120]  	BrackettedExpression	  ::=  	'(' Expression ')'
-         [121]  	BuiltInCall	  ::=  	  Aggregate
+         [121]  	BuiltInCall	  ::=	  Aggregate
          |	'STR' '(' Expression ')'
          |	'LANG' '(' Expression ')'
          |	'LANGMATCHES' '(' Expression ',' Expression ')'
